@@ -10,6 +10,9 @@ import { ExerciseController } from './exercise/exercise.controller';
 import { DefaultExerciseModule } from './exercise/default-exercise/default-exercise.module';
 import { ExerciseModule } from './exercise/exercise.module';
 import { MusclegroupModule } from './musclegroup/musclegroup.module';
+import { UserModule } from './user/user.module';
+import { SetModule } from './set/set.module';
+import { WorkoutModule } from './workout/workout.module';
 
 @Module({
   imports: [
@@ -20,6 +23,9 @@ import { MusclegroupModule } from './musclegroup/musclegroup.module';
     ExerciseModule,
     DefaultExerciseModule,
     MusclegroupModule,
+    UserModule,
+    SetModule,
+    WorkoutModule,
   ],
   controllers: [
     AppController,
