@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id          Int               @id @default(autoincrement())
+  username         String            @unique
+  email            String            @unique
+  first_name       String?
+  last_name        String?
+  created_at       DateTime          @default(now())
+  updated_at       DateTime          @updatedAt
+  Workouts         Workout[]
+  UserExercises    UserExercise[]
+  WorkoutExercises WorkoutExercise[]
+}
+
+model Workout {
+  workout_id       Int               @id @default(autoincrement())
+  workout_name     String
+  user             User              @relation(fields: [user_id], references: [user_id])
+  user_id          Int
+  created_at       DateTime          @default(now())
+  updated_at       DateTime          @updatedAt
+  WorkoutExercises WorkoutExercise[]
+}
+
+model DefaultExercise {
+  default_exercise_id Int    @id @default(autoincrement())
+  exercise_name       String
+}
+
+model UserExercise {
+  user_exercise_id Int      @id @default(autoincrement())
+  exercise_name    String
+  user             User     @relation(fields: [user_id], references: [user_id])
+  user_id          Int
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+}
+
+model WorkoutExercise {
+  workout_exercise_id  Int                   @id @default(autoincrement())
+  workout              Workout               @relation(fields: [workout_id], references: [workout_id])
+  workout_id           Int
+  exercise_name        String
+  user                 User                  @relation(fields: [user_id], references: [user_id])
+  user_id              Int
+  created_at           DateTime              @default(now())
+  updated_at           DateTime              @updatedAt
+  Sets                 Set[]
+  ExerciseMuscleGroups ExerciseMuscleGroup[]
+}
+
+model Set {
+  set_id              Int             @id @default(autoincrement())
+  workout_exercise    WorkoutExercise @relation(fields: [workout_exercise_id], references: [workout_exercise_id])
+  workout_exercise_id Int
+}
+
+model MuscleGroup {
+  musclegroup_id       Int                   @id @default(autoincrement())
+  musclegroup_name     String
+  ExerciseMuscleGroups ExerciseMuscleGroup[]
+}
+
+model ExerciseMuscleGroup {
+  workout_exercise    WorkoutExercise @relation(fields: [workout_exercise_id], references: [workout_exercise_id])
+  workout_exercise_id Int
+  musclegroup         MuscleGroup     @relation(fields: [musclegroup_id], references: [musclegroup_id])
+  musclegroup_id      Int
+  intensity           String
+
+  @@unique([workout_exercise_id, musclegroup_id])
+}
