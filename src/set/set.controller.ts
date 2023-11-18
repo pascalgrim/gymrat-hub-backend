@@ -1,5 +1,6 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
 import { SetService } from './set.service';
+import { AddSetDto } from './dto/add-set.dto';
 
 @Controller('set')
 export class SetController {
@@ -11,8 +12,8 @@ export class SetController {
   }
 
   @Post()
-  addSet() {
-    return this.setService.addSet();
+  addSet(@Body() addSetDto: AddSetDto) {
+    return this.setService.addSet(addSetDto);
   }
 
   @Delete()
