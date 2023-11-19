@@ -1,9 +1,9 @@
 import { IsInt, IsNotEmpty, IsNumber } from 'class-validator';
 
-export class AddSetDto {
+export class UpdateSetDto {
   @IsInt()
   @IsNotEmpty()
-  exerciseId: number;
+  setId: number;
 
   @IsNumber()
   @IsNotEmpty()

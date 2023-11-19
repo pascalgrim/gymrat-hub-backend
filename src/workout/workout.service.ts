@@ -18,7 +18,7 @@ export class WorkoutService {
       });
       return workout;
     } catch (error) {
-      throw new Error('Creating Workout failed');
+      throw new Error(error);
     }
   }
   async deleteWorkout(deleteWorkoutDto: DeleteWorkoutDto) {
@@ -58,5 +58,13 @@ export class WorkoutService {
       },
     });
     return workout;
+  }
+  async getWorkoutsByUserId(userId: number) {
+    const workouts = await this.prisma.workout.findMany({
+      where: {
+        user_id: userId,
+      },
+    });
+    return workouts;
   }
 }

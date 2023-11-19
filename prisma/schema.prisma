@@ -53,7 +53,7 @@ model Exercise {
   updated_at          DateTime              @updatedAt
   Workout             Workout?              @relation(fields: [workout_id], references: [workout_id])
   workout_id          Int?
-  Set                 Set[]
+  Sets                Set[]
   ExerciseMuscleGroup ExerciseMuscleGroup[]
 
   @@unique([user_id, exercise_name])
@@ -80,6 +80,8 @@ model Set {
   exercise_id Int
   reps        Int
   weight      Decimal
+  createdAt   DateTime @default(now())
+  updated_at  DateTime @updatedAt
 
   @@map("sets")
 }

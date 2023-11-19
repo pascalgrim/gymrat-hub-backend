@@ -1,13 +1,30 @@
-import { Controller, Body, Post, Get } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  Post,
+  Get,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ExerciseService } from './exercise.service';
 import { AddExerciseDto } from './dto/add-exercise.dto';
 
-@Controller('workout-exercise')
+@Controller('exercise')
 export class ExerciseController {
-  constructor(private readonly workoutExerciseService: ExerciseService) {}
+  constructor(private readonly exerciseService: ExerciseService) {}
 
   @Post()
-  addWorkoutExercise(@Body() addExerciseDto: AddExerciseDto) {
-    return this.workoutExerciseService.addWorkoutExercise(addExerciseDto);
+  addExercise(@Body() addExerciseDto: AddExerciseDto) {
+    return this.exerciseService.addExercise(addExerciseDto);
+  }
+
+  @Get(':exerciseId')
+  getExercise(@Param('exerciseId', ParseIntPipe) exerciseId: number) {
+    return this.exerciseService.getExerciseById(exerciseId);
+  }
+
+  @Get('/sets/:exerciseId')
+  getExerciseSets(@Param('exerciseId', ParseIntPipe) exerciseId: number) {
+    return this.exerciseService.getExerciseSets(exerciseId);
   }
 }

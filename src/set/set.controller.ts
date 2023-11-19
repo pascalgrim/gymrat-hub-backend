@@ -1,14 +1,24 @@
-import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { SetService } from './set.service';
 import { AddSetDto } from './dto/add-set.dto';
+import { UpdateSetDto } from './dto/update-set.dto';
 
 @Controller('set')
 export class SetController {
   constructor(private readonly setService: SetService) {}
 
-  @Get()
-  getSet() {
-    return this.setService.getSet();
+  @Get(':setId')
+  getSet(@Param('setId', ParseIntPipe) setId: number) {
+    return this.setService.getSetById(setId);
   }
 
   @Post()
@@ -16,13 +26,13 @@ export class SetController {
     return this.setService.addSet(addSetDto);
   }
 
-  @Delete()
-  removeSet() {
-    return this.setService.removeSet();
+  @Delete(':setId')
+  removeSet(@Param('setId', ParseIntPipe) setId: number) {
+    return this.setService.removeSet(setId);
   }
 
   @Patch()
-  updateSet() {
-    return this.setService.updateSet();
+  updateSet(@Body() updateSetDto: UpdateSetDto) {
+    return this.setService.updateSet(updateSetDto);
   }
 }
