@@ -20,6 +20,8 @@ import { ExerciseMuscleGroupService } from './musclegroup/exercise-muscle-group/
 import { ExerciseModule } from './exercise/exercise.module';
 import { ExerciseController } from './exercise/exercise.controller';
 import { ExerciseService } from './exercise/exercise.service';
+import { ExerciseDayModule } from './exercise-day/exercise-day.module';
+import { ExerciseDayService } from './exercise-day/exercise-day.service';
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { ExerciseService } from './exercise/exercise.service';
     WorkoutModule,
     AuthModule,
     ExerciseModule,
+    ExerciseDayModule,
   ],
   controllers: [
     AppController,
@@ -52,6 +55,7 @@ import { ExerciseService } from './exercise/exercise.service';
     MusclegroupService,
     ExerciseMuscleGroupService,
     ExerciseService,
+    ExerciseDayService,
   ],
 })
 export class AppModule {}

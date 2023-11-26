@@ -45,16 +45,16 @@ model DefaultExercise {
 }
 
 model Exercise {
-  exercise_id         Int                   @id @default(autoincrement())
-  exercise_name       String
-  user                User                  @relation(fields: [user_id], references: [user_id])
-  user_id             Int
-  created_at          DateTime              @default(now())
-  updated_at          DateTime              @updatedAt
-  Workout             Workout?              @relation(fields: [workout_id], references: [workout_id])
-  workout_id          Int?
-  Sets                Set[]
-  ExerciseMuscleGroup ExerciseMuscleGroup[]
+  exercise_id          Int                   @id @default(autoincrement())
+  exercise_name        String
+  user                 User                  @relation(fields: [user_id], references: [user_id])
+  user_id              Int
+  created_at           DateTime              @default(now())
+  updated_at           DateTime              @updatedAt
+  Workout              Workout?              @relation(fields: [workout_id], references: [workout_id])
+  workout_id           Int?
+  ExerciseMuscleGroups ExerciseMuscleGroup[]
+  ExerciseDays         ExerciseDay[]
 
   @@unique([user_id, exercise_name])
   @@map("exercises")
@@ -74,14 +74,26 @@ model Exercise {
 //   @@map("workoutExercises")
 // }
 
+model ExerciseDay {
+  exercise_day_id Int      @id @default(autoincrement())
+  exercise        Exercise @relation(fields: [exercise_id], references: [exercise_id])
+  exercise_id     Int
+  createdAt       DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  Sets            Set[]
+  date            String
+
+  @@map("exerciseDays")
+}
+
 model Set {
-  set_id      Int      @id @default(autoincrement())
-  exercise    Exercise @relation(fields: [exercise_id], references: [exercise_id])
-  exercise_id Int
-  reps        Int
-  weight      Decimal
-  createdAt   DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  set_id          Int         @id @default(autoincrement())
+  exerciseDay     ExerciseDay @relation(fields: [exercise_day_id], references: [exercise_day_id])
+  exercise_day_id Int
+  reps            Int
+  weight          Decimal
+  createdAt       DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
 
   @@map("sets")
 }

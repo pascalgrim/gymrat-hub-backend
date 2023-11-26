@@ -28,16 +28,20 @@ export class ExerciseService {
         exercise_id: exerciseId,
       },
       include: {
-        Sets: true,
+        ExerciseDays: {
+          include: {
+            Sets: true,
+          },
+        },
       },
     });
     return exercise;
   }
 
-  async getExerciseSets(exerciseId: number) {
+  async getExerciseSets(exercise_day_id: number) {
     const sets = await this.prisma.set.findMany({
       where: {
-        exercise_id: exerciseId,
+        exercise_day_id: exercise_day_id,
       },
     });
     return sets;

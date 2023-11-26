@@ -56,6 +56,9 @@ export class WorkoutService {
       where: {
         workout_id: workoutID,
       },
+      include: {
+        Exercises: true,
+      },
     });
     return workout;
   }
