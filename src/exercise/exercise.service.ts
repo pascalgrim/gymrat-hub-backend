@@ -7,13 +7,12 @@ export class ExerciseService {
   constructor(private readonly prisma: PrismaService) {}
 
   async addExercise(dto: AddExerciseDto) {
-    const { workoutId, exerciseName, userId } = dto;
+    const { exerciseName, userId } = dto;
     try {
       const exercise = await this.prisma.exercise.create({
         data: {
           user_id: userId,
           exercise_name: exerciseName,
-          workout_id: workoutId,
         },
       });
       return exercise;
@@ -52,5 +51,14 @@ export class ExerciseService {
       },
     });
     return sets;
+  }
+
+  async getExercisesByUserId(userId: number) {
+    const exercises = await this.prisma.exercise.findMany({
+      where: {
+        user_id: userId,
+      },
+    });
+    return exercises;
   }
 }

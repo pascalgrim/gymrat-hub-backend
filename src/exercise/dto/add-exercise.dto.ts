@@ -5,9 +5,9 @@ export class AddExerciseDto {
   @IsNotEmpty()
   userId: number;
 
-  @IsInt()
-  @IsNotEmpty()
-  workoutId: number;
+  // @IsInt()
+  // @IsNotEmpty()
+  // workoutId: number;
 
   @IsString()
   @IsNotEmpty()

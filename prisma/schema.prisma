@@ -51,10 +51,12 @@ model Exercise {
   user_id              Int
   created_at           DateTime              @default(now())
   updated_at           DateTime              @updatedAt
-  Workout              Workout?              @relation(fields: [workout_id], references: [workout_id])
-  workout_id           Int?
+  // Workout              Workout?              @relation(fields: [workout_id], references: [workout_id])
+  // workout_id           Int?
   ExerciseMuscleGroups ExerciseMuscleGroup[]
   ExerciseDays         ExerciseDay[]
+  Workout              Workout?              @relation(fields: [workoutWorkout_id], references: [workout_id])
+  workoutWorkout_id    Int?
 
   @@unique([user_id, exercise_name])
   @@map("exercises")

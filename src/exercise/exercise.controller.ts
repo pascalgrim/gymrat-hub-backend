@@ -27,4 +27,9 @@ export class ExerciseController {
   getExerciseSets(@Param('exerciseDayId', ParseIntPipe) exerciseDayId: number) {
     return this.exerciseService.getExerciseSets(exerciseDayId);
   }
+
+  @Get('/user/:userId')
+  getExercisesByUserId(@Param('userId', ParseIntPipe) userId: number) {
+    return this.exerciseService.getExercisesByUserId(userId);
+  }
 }
