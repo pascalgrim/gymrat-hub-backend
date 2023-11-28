@@ -29,8 +29,15 @@ export class ExerciseService {
       },
       include: {
         ExerciseDays: {
+          orderBy: {
+            createdAt: 'desc',
+          },
           include: {
-            Sets: true,
+            Sets: {
+              orderBy: {
+                createdAt: 'asc',
+              },
+            },
           },
         },
       },

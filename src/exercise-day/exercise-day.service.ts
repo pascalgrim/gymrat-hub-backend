@@ -21,11 +21,7 @@ export class ExerciseDayService {
   }
 
   async addExerciseDay(dto: AddExerciseDayDto) {
-    const { exerciseId } = dto;
-    console.log('Yo');
     const currentDate = formatDateToDDMMYYYY(new Date());
-    console.log('Curr', currentDate);
-    console.log('Go');
     const dayExists = await this.prisma.exerciseDay.findFirst({
       where: {
         date: currentDate,
@@ -34,7 +30,7 @@ export class ExerciseDayService {
     if (dayExists) return;
     const day = await this.prisma.exerciseDay.create({
       data: {
-        exercise_id: exerciseId,
+        exercise_id: dto.exerciseId,
         date: currentDate,
       },
     });
@@ -56,4 +52,23 @@ export class ExerciseDayService {
 
     return latestDay;
   };
+
+  async deleteExerciseDay(exerciseDayId: number) {
+    const deletedDay = await this.prisma.exerciseDay.delete({
+      where: {
+        exercise_day_id: exerciseDayId,
+      },
+    });
+    return deletedDay;
+  }
+
+  async getExerciseDayByDate(exerciseId: number, date: string) {
+    const days = await this.prisma.exerciseDay.findMany({
+      where: {
+        exercise_id: exerciseId,
+        date: date,
+      },
+    });
+    return days[0];
+  }
 }

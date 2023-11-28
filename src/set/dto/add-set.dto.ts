@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class AddSetDto {
   @IsInt()
@@ -12,4 +12,8 @@ export class AddSetDto {
   @IsInt()
   @IsNotEmpty()
   reps: number;
+
+  @IsString()
+  @IsNotEmpty()
+  date: string;
 }

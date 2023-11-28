@@ -14,29 +14,19 @@ export class SetService {
   ) {}
   async addSet(dto: AddSetDto) {
     try {
-      const { reps, weight, exerciseId } = dto;
-      console.log('A');
-      const currentDate = formatDateToDDMMYYYY(new Date());
-      const days =
-        await this.exerciseDayService.getExerciseDaysByExerciseId(exerciseId);
-      const latestDay = this.exerciseDayService.getLatestDay(days);
-      let exerciseDay: ExerciseDay = latestDay;
-      console.log('B', latestDay);
-      if (!latestDay) {
-        exerciseDay = await this.exerciseDayService.addExerciseDay({
-          exerciseId,
-        });
-      } else {
-        if (currentDate !== latestDay.date) {
-          exerciseDay = await this.exerciseDayService.addExerciseDay({
-            exerciseId,
-          });
-        }
+      const { reps, weight, exerciseId, date } = dto;
+      let day = await this.exerciseDayService.getExerciseDayByDate(
+        exerciseId,
+        date,
+      );
+      console.log('day1', day);
+      if (!day) {
+        day = await this.exerciseDayService.addExerciseDay({ exerciseId });
       }
-
+      console.log('day2', day);
       const set = await this.prisma.set.create({
         data: {
-          exercise_day_id: exerciseDay.exercise_day_id,
+          exercise_day_id: day.exercise_day_id,
           weight,
           reps,
         },
@@ -53,6 +43,10 @@ export class SetService {
           set_id: setId,
         },
       });
+      const leftSets = await this.getSetsOfExerciseDay(set.exercise_day_id);
+      if (leftSets.length < 1) {
+        this.exerciseDayService.deleteExerciseDay(set.exercise_day_id);
+      }
       return set;
     } catch (error) {
       throw new Error(error);
@@ -82,5 +76,17 @@ export class SetService {
       },
     });
     return set;
+  }
+
+  private async getSetsOfExerciseDay(exerciseDayId: number) {
+    const exerciseDay = await this.prisma.exerciseDay.findUnique({
+      where: {
+        exercise_day_id: exerciseDayId,
+      },
+      include: {
+        Sets: true,
+      },
+    });
+    return exerciseDay.Sets;
   }
 }
