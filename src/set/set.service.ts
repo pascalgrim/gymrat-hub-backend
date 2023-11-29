@@ -20,8 +20,9 @@ export class SetService {
         date,
       );
       console.log('day1', day);
-      if (!day) {
+      if (day === undefined) {
         day = await this.exerciseDayService.addExerciseDay({ exerciseId });
+        console.log('D3', day);
       }
       console.log('day2', day);
       const set = await this.prisma.set.create({

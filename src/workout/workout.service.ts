@@ -57,9 +57,14 @@ export class WorkoutService {
         workout_id: workoutID,
       },
       include: {
-        Exercises: true,
+        exercises: {
+          include: {
+            exercise: true,
+          },
+        },
       },
     });
+    console.log(workout);
     return workout;
   }
   async getWorkoutsByUserId(userId: number) {

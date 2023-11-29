@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AddExerciseDto } from './dto/add-exercise.dto';
+import { AddExerciseToWorkoutDto } from './dto/add-exercise-to-workout.dto';
+import { WorkoutService } from 'src/workout/workout.service';
 
 @Injectable()
 export class ExerciseService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly workoutService: WorkoutService,
+  ) {}
 
-  async addExercise(dto: AddExerciseDto) {
+  async addExerciseToUser(dto: AddExerciseDto) {
     const { exerciseName, userId } = dto;
     try {
       const exercise = await this.prisma.exercise.create({
@@ -15,6 +20,36 @@ export class ExerciseService {
           exercise_name: exerciseName,
         },
       });
+      return exercise;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async addExerciseToWorkout(dto: AddExerciseToWorkoutDto) {
+    const { exerciseName, userId, workoutId } = dto;
+    try {
+      const exercise = await this.prisma.exercise.create({
+        data: {
+          user_id: userId,
+          exercise_name: exerciseName,
+        },
+      });
+      const existingWorkout =
+        await this.workoutService.getWorkoutById(workoutId);
+      const updatedWorkout = await this.prisma.workout.update({
+        where: {
+          workout_id: existingWorkout.workout_id,
+        },
+        data: {
+          exercises: {
+            create: {
+              exercise_id: exercise.exercise_id,
+            },
+          },
+        },
+      });
+      console.log('Updated', updatedWorkout);
       return exercise;
     } catch (error) {
       throw new Error(error);

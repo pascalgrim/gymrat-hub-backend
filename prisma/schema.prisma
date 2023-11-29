@@ -26,13 +26,13 @@ model User {
 }
 
 model Workout {
-  workout_id   Int        @id @default(autoincrement())
+  workout_id   Int                 @id @default(autoincrement())
   workout_name String
-  user         User       @relation(fields: [user_id], references: [user_id])
+  user         User                @relation(fields: [user_id], references: [user_id])
   user_id      Int
-  created_at   DateTime   @default(now())
-  updated_at   DateTime   @updatedAt
-  Exercises    Exercise[]
+  created_at   DateTime            @default(now())
+  updated_at   DateTime            @updatedAt
+  exercises    ExerciseInWorkout[]
 
   @@map("workouts")
 }
@@ -51,15 +51,23 @@ model Exercise {
   user_id              Int
   created_at           DateTime              @default(now())
   updated_at           DateTime              @updatedAt
-  // Workout              Workout?              @relation(fields: [workout_id], references: [workout_id])
-  // workout_id           Int?
   ExerciseMuscleGroups ExerciseMuscleGroup[]
   ExerciseDays         ExerciseDay[]
-  Workout              Workout?              @relation(fields: [workoutWorkout_id], references: [workout_id])
-  workoutWorkout_id    Int?
+
+  workouts ExerciseInWorkout[]
 
   @@unique([user_id, exercise_name])
   @@map("exercises")
+}
+
+model ExerciseInWorkout {
+  exercise    Exercise @relation(fields: [exercise_id], references: [exercise_id])
+  exercise_id Int
+
+  workout    Workout @relation(fields: [workout_id], references: [workout_id])
+  workout_id Int
+
+  @@id([exercise_id, workout_id])
 }
 
 // model WorkoutExercise {

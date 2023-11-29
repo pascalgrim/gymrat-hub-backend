@@ -25,9 +25,10 @@ export class ExerciseDayService {
     const dayExists = await this.prisma.exerciseDay.findFirst({
       where: {
         date: currentDate,
+        exercise_id: dto.exerciseId,
       },
     });
-    if (dayExists) return;
+    if (dayExists) return dayExists;
     const day = await this.prisma.exerciseDay.create({
       data: {
         exercise_id: dto.exerciseId,

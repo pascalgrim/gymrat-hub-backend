@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { ExerciseService } from './exercise.service';
 import { AddExerciseDto } from './dto/add-exercise.dto';
+import { AddExerciseToWorkoutDto } from './dto/add-exercise-to-workout.dto';
 
 @Controller('exercise')
 export class ExerciseController {
@@ -15,7 +16,12 @@ export class ExerciseController {
 
   @Post()
   addExercise(@Body() addExerciseDto: AddExerciseDto) {
-    return this.exerciseService.addExercise(addExerciseDto);
+    return this.exerciseService.addExerciseToUser(addExerciseDto);
+  }
+
+  @Post('/workout')
+  addExerciseToWorkout(@Body() dto: AddExerciseToWorkoutDto) {
+    return this.exerciseService.addExerciseToWorkout(dto);
   }
 
   @Get(':exerciseId')
