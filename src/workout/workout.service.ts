@@ -25,6 +25,13 @@ export class WorkoutService {
   async deleteWorkout(deleteWorkoutDto: DeleteWorkoutDto) {
     const { userId, workoutId } = deleteWorkoutDto;
     try {
+      const exerciseInWorkouts = await this.prisma.exerciseInWorkout.deleteMany(
+        {
+          where: {
+            workout_id: workoutId,
+          },
+        },
+      );
       const workout = await this.prisma.workout.delete({
         where: {
           workout_id: workoutId,
@@ -33,7 +40,7 @@ export class WorkoutService {
       });
       return workout;
     } catch (error) {
-      throw new Error('Deleting Workout failed');
+      throw new Error(error);
     }
   }
   async updateWorkout(updateWorkoutDto: UpdateWorkoutDto) {
