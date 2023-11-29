@@ -37,19 +37,10 @@ export class ExerciseService {
       });
       const existingWorkout =
         await this.workoutService.getWorkoutById(workoutId);
-      const updatedWorkout = await this.prisma.workout.update({
-        where: {
-          workout_id: existingWorkout.workout_id,
-        },
-        data: {
-          exercises: {
-            create: {
-              exercise_id: exercise.exercise_id,
-            },
-          },
-        },
+      const updatedWorkout = this.workoutService.addExerciseToWorkout({
+        workoutId,
+        exerciseId: exercise.exercise_id,
       });
-      console.log('Updated', updatedWorkout);
       return exercise;
     } catch (error) {
       throw new Error(error);

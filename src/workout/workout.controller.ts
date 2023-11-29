@@ -12,6 +12,7 @@ import { WorkoutService } from './workout.service';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { DeleteWorkoutDto } from './dto/delete-workout.dto';
 import { UpdateWorkoutDto } from './dto/update-workout.dto';
+import { AddExerciseToWorkout } from './dto/add-exercise-to-workout.dto';
 
 @Controller('workout')
 export class WorkoutController {
@@ -40,5 +41,10 @@ export class WorkoutController {
   @Get('/user/:userId')
   getWorkoutByUserId(@Param('userId', ParseIntPipe) userId: number) {
     return this.workoutService.getWorkoutsByUserId(userId);
+  }
+
+  @Post('/exercise')
+  addExercise(@Body() dto: AddExerciseToWorkout) {
+    return this.workoutService.addExerciseToWorkout(dto);
   }
 }

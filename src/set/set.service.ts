@@ -19,12 +19,9 @@ export class SetService {
         exerciseId,
         date,
       );
-      console.log('day1', day);
       if (day === undefined) {
         day = await this.exerciseDayService.addExerciseDay({ exerciseId });
-        console.log('D3', day);
       }
-      console.log('day2', day);
       const set = await this.prisma.set.create({
         data: {
           exercise_day_id: day.exercise_day_id,
