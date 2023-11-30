@@ -80,6 +80,9 @@ export class WorkoutService {
       where: {
         user_id: userId,
       },
+      include: {
+        exercises: true,
+      },
     });
     return workouts;
   }
