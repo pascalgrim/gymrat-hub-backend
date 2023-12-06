@@ -1,8 +1,7 @@
 # Gymrat Hub Backend
 
 This is the backend for the Gymrat Hub application, built with NestJS.
-Frontend can be found [here](https://github.com/pascalgrim/gymrat-hub-frontend)
-Work in Progress
+Frontend can be found [here](https://github.com/pascalgrim/gymrat-hub-frontend). (Work in Progress)
 
 ## Features
 
@@ -38,13 +37,13 @@ The postgres username and password can be edited in the docker-compose.yml file
 docker compose up dev-db -d
 ```
 
-4.Run prisma migration:
+4. Run prisma migration:
 
 ```bash
 npm run prisma:dev:deploy
 ```
 
-5.Start the application:
+5. Start the application:
 
 ```bash
 npm run start
