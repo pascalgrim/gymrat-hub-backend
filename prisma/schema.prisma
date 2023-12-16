@@ -110,7 +110,7 @@ model Set {
 
 model MuscleGroup {
   musclegroup_id       Int                   @id @default(autoincrement())
-  musclegroup_name     String
+  musclegroup_name     String                @unique
   ExerciseMuscleGroups ExerciseMuscleGroup[]
 
   @@map("musclegroups")
@@ -121,7 +121,6 @@ model ExerciseMuscleGroup {
   exercise_id    Int
   musclegroup    MuscleGroup @relation(fields: [musclegroup_id], references: [musclegroup_id])
   musclegroup_id Int
-  intensity      String
 
   @@unique([exercise_id, musclegroup_id])
   @@map("exerciseMuscleGroups")

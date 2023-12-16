@@ -72,7 +72,6 @@ export class WorkoutService {
         },
       },
     });
-    console.log(workout);
     return workout;
   }
   async getWorkoutsByUserId(userId: number) {

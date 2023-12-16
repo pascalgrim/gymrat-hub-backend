@@ -56,6 +56,7 @@ import { ExerciseDayService } from './exercise-day/exercise-day.service';
     ExerciseMuscleGroupService,
     ExerciseService,
     ExerciseDayService,
+    ExerciseMuscleGroupService,
   ],
 })
 export class AppModule {}

@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, isNotEmpty } from 'class-validator';
 
 export class AddExerciseDto {
   @IsInt()
@@ -12,4 +12,7 @@ export class AddExerciseDto {
   @IsString()
   @IsNotEmpty()
   exerciseName: string;
+
+  @IsNotEmpty()
+  musclegroupNames: string[];
 }

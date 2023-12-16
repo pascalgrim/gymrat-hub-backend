@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { AddExerciseDto } from './dto/add-exercise.dto';
 import { AddExerciseToWorkoutDto } from './dto/add-exercise-to-workout.dto';
 import { WorkoutService } from 'src/workout/workout.service';
+import { MuscleGroup } from '@prisma/client';
 
 @Injectable()
 export class ExerciseService {
@@ -12,7 +13,7 @@ export class ExerciseService {
   ) {}
 
   async addExerciseToUser(dto: AddExerciseDto) {
-    const { exerciseName, userId } = dto;
+    const { exerciseName, userId, musclegroupNames } = dto;
     try {
       const exercise = await this.prisma.exercise.create({
         data: {
@@ -20,6 +21,27 @@ export class ExerciseService {
           exercise_name: exerciseName,
         },
       });
+      musclegroupNames.forEach(async (muscle) => {
+        const muscleExists = await this.prisma.muscleGroup.findUnique({
+          where: { musclegroup_name: muscle },
+        });
+        let newMuscle: MuscleGroup;
+        if (!muscleExists) {
+          newMuscle = await this.prisma.muscleGroup.create({
+            data: { musclegroup_name: muscle },
+          });
+        }
+        const id = muscleExists
+          ? muscleExists.musclegroup_id
+          : newMuscle.musclegroup_id;
+        await this.prisma.exerciseMuscleGroup.create({
+          data: {
+            exercise_id: exercise.exercise_id,
+            musclegroup_id: id,
+          },
+        });
+      });
+
       return exercise;
     } catch (error) {
       throw new Error(error);
@@ -27,7 +49,7 @@ export class ExerciseService {
   }
 
   async addExerciseToWorkout(dto: AddExerciseToWorkoutDto) {
-    const { exerciseName, userId, workoutId } = dto;
+    const { exerciseName, userId, workoutId, musclegroupNames } = dto;
     try {
       const exercise = await this.prisma.exercise.create({
         data: {
@@ -35,6 +57,27 @@ export class ExerciseService {
           exercise_name: exerciseName,
         },
       });
+      musclegroupNames.forEach(async (muscle) => {
+        const muscleExists = await this.prisma.muscleGroup.findUnique({
+          where: { musclegroup_name: muscle },
+        });
+        let newMuscle: MuscleGroup;
+        if (!muscleExists) {
+          newMuscle = await this.prisma.muscleGroup.create({
+            data: { musclegroup_name: muscle },
+          });
+        }
+        const id = muscleExists
+          ? muscleExists.musclegroup_id
+          : newMuscle.musclegroup_id;
+        await this.prisma.exerciseMuscleGroup.create({
+          data: {
+            exercise_id: exercise.exercise_id,
+            musclegroup_id: id,
+          },
+        });
+      });
+
       const existingWorkout =
         await this.workoutService.getWorkoutById(workoutId);
       const updatedWorkout = this.workoutService.addExerciseToWorkout({

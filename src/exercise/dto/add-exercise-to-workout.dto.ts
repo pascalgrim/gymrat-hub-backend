@@ -12,4 +12,7 @@ export class AddExerciseToWorkoutDto {
   @IsString()
   @IsNotEmpty()
   exerciseName: string;
+
+  @IsNotEmpty()
+  musclegroupNames: string[];
 }

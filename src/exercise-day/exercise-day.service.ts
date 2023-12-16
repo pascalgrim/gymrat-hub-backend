@@ -16,6 +16,9 @@ export class ExerciseDayService {
       include: {
         Sets: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
     return days;
   }
